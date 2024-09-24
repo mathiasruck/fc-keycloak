@@ -11,18 +11,19 @@ export function makeLoginUrl() {
 
   const loginUrlParams = new URLSearchParams({
     client_id: "fullcycle-client",
-    redirect_uri: "http://localhost:3000/callbackdddddd",
+    redirect_uri: "http://localhost:3000/callback",
     response_type: "token id_token",
     nonce: nonce,
     state: state,
   });
 
-  return `http://localhost:8080/realms/fullcycle-realm/protocol/openid-connect/auth?${loginUrlParams.toString()}`;
+  return `http://localhost:8090/realms/fullcycle-realm/protocol/openid-connect/auth?${loginUrlParams.toString()}`;
 }
 
 export function login(accessToken: string, idToken: string, state: string) {
   const stateCookie = Cookies.get("state");
   if (stateCookie !== state) {
+    console.log("stateCookie: "+stateCookie)
     throw new Error("Invalid state");
   }
 
@@ -79,7 +80,7 @@ export function makeLogoutUrl() {
   Cookies.remove("nonce");
   Cookies.remove("state");
 
-  return `http://localhost:8080/realms/fullcycle-realm/protocol/openid-connect/logout?${logoutParams.toString()}`;
+  return `http://localhost:8090/realms/fullcycle-realm/protocol/openid-connect/logout?${logoutParams.toString()}`;
 }
 
 //http://localhost:3000/callback#error=unauthorized_client&error_description=Client+is+not+allowed+to+initiate+browser+login+with+given+response_type.+Implicit+flow+is+disabled+for+the+client.&state=0.qka67jgt2m
